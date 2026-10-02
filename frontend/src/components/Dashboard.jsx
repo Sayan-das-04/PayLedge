@@ -13,10 +13,10 @@ export default function Dashboard({ user }) {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const empRes = await axios.get('http://localhost:5000/api/employees');
-        const attRes = await axios.get('http://localhost:5000/api/attendance');
-        const payRes = await axios.get('http://localhost:5000/api/payroll');
-        const leaveRes = await axios.get('http://localhost:5000/api/leaves');
+        const empRes = await axios.get('https://payledge.onrender.com/api/employees');
+        const attRes = await axios.get('https://payledge.onrender.com/api/attendance');
+        const payRes = await axios.get('https://payledge.onrender.com/api/payroll');
+        const leaveRes = await axios.get('https://payledge.onrender.com/api/leaves');
         
         const todayStr = new Date().toISOString().split('T')[0];
         

@@ -8,8 +8,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/leaves';
-const EMP_API_URL = 'http://localhost:5000/api/employees';
+const API_URL = 'https://payledge.onrender.com/api/leaves';
+const EMP_API_URL = 'https://payledge.onrender.com/api/employees';
 
 export default function Leaves({ user }) {
   const [leaves, setLeaves] = useState([]);

@@ -7,7 +7,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/employees';
+const API_URL = 'https://payledge.onrender.com/api/employees';
 
 export default function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -24,7 +24,7 @@ export default function Employees() {
       const res = await axios.get(API_URL);
       setEmployees(res.data);
       
-      const leaveRes = await axios.get('http://localhost:5000/api/leaves');
+      const leaveRes = await axios.get('https://payledge.onrender.com/api/leaves');
       setPendingLeaves(leaveRes.data.filter(l => l.status === 'Pending').length);
     } catch (err) {
       console.error(err);

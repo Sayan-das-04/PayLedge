@@ -8,8 +8,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/payroll';
-const EMP_API_URL = 'http://localhost:5000/api/employees';
+const API_URL = 'https://payledge.onrender.com/api/payroll';
+const EMP_API_URL = 'https://payledge.onrender.com/api/employees';
 
 export default function Payroll({ user }) {
   const [payrolls, setPayrolls] = useState([]);

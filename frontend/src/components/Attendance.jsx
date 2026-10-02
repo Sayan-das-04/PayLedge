@@ -7,8 +7,8 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/attendance';
-const EMP_API_URL = 'http://localhost:5000/api/employees';
+const API_URL = 'https://payledge.onrender.com/api/attendance';
+const EMP_API_URL = 'https://payledge.onrender.com/api/employees';
 
 export default function Attendance({ user }) {
   const [records, setRecords] = useState([]);

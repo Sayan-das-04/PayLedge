@@ -6,7 +6,7 @@ import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/payroll";
+const API_URL = "https://payledge.onrender.com/api/payroll";
 
 export default function Payslips({ user }) {
   const [payrolls, setPayrolls] = useState([]);

@@ -21,7 +21,7 @@ export default function Login({ onLogin }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/employees/login",
+        "https://payledge.onrender.com/api/employees/login",
         {
           email: managerEmail,
           password: managerPassword,
@@ -41,7 +41,7 @@ export default function Login({ onLogin }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/employees/login",
+        "https://payledge.onrender.com/api/employees/login",
         {
           employeeId,
           password: employeePassword,
