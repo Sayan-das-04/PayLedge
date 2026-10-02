@@ -36,7 +36,7 @@ async function seed() {
     // Add attendance for today
     const today = new Date();
     today.setHours(0,0,0,0);
-    const statuses = ['Present', 'Present', 'Present', 'Present', 'Present', 'Present', 'Present', 'Absent', 'On Leave'];
+    const statuses = ['Present', 'Present', 'Present', 'Present', 'Present', 'Present', 'Present', 'Absent', 'Half Day'];
     
     await Attendance.deleteMany({ date: { $gte: today } }); // Clear today's attendance so we can seed fresh
     

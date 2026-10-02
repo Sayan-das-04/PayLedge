@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="frontend/public/favicon.svg" alt="PayLedger Logo" width="80" height="80">
+  <img src="frontend/public/payledger-logo.svg" alt="PayLedger Logo" width="80" height="80">
   <h1>PayLedger</h1>
   <p><strong>A Modern, Enterprise-Grade HR & Payroll Management System</strong></p>
 </div>
