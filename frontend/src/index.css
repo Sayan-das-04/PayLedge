@@ -1,0 +1,780 @@
+:root {
+  --burgundy-dark: #4c0519;
+  --burgundy-light: #9f1239;
+  --gold: #f59e0b;
+  --cream-bg: #fff7ed;
+  --text-gray: #71717a;
+  
+  /* PrimeReact Overrides */
+  --primary-color: #9f1239 !important;
+  --primary-color-text: #ffffff !important;
+}
+
+/* Navbar SaaS Styles */
+.normal-nav-link {
+  color: #52525B;
+  transition: all 0.2s;
+}
+.normal-nav-link:hover {
+  background-color: #F3F4F6;
+  color: #18181B;
+}
+.active-nav-link {
+  background-color: #FCE7F3;
+  color: #9F1239;
+}
+.nav-icon-hover {
+  transition: background-color 0.2s;
+}
+.nav-icon-hover:hover {
+  background-color: #FFF7ED;
+}
+.profile-hover {
+  transition: background-color 0.2s;
+}
+.profile-hover:hover {
+  background-color: #F3F4F6;
+}
+
+/* Global Card Hover Effect */
+.p-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.p-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* Dark Footer Links */
+.footer-link {
+  color: #F3DDE2;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: block;
+  transition: color 0.2s ease;
+}
+.footer-link:hover {
+  color: var(--gold);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--cream-bg);
+}
+
+.sidebar-container {
+  background-color: var(--burgundy-dark);
+  color: white;
+}
+
+.sidebar-link {
+  color: #fca5a5;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.sidebar-link.active {
+  background-color: var(--burgundy-light);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(159, 18, 57, 0.4);
+}
+
+.stat-icon-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #ffe4e6;
+  color: var(--burgundy-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.p-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border: 1px solid #f3f4f6;
+}
+
+.p-button {
+  border-radius: 8px;
+}
+
+.btn-burgundy {
+  background-color: var(--burgundy-dark);
+  color: white;
+  border: none;
+}
+.btn-burgundy:hover {
+  background-color: #700b28;
+  color: white;
+}
+
+/* DataTable Customizations */
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: #fdf5f5;
+  color: var(--burgundy-dark);
+  font-weight: 600;
+  border: none;
+  border-bottom: 1px solid #fee2e2;
+  padding: 1rem;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  padding: 1rem;
+  font-size: 14px;
+}
+
+/* Badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.status-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.status-badge.active {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+.status-badge.active::before { background-color: #10b981; }
+.status-badge.on-leave {
+  background-color: #fffbeb;
+  color: #92400e;
+}
+.status-badge.on-leave::before { background-color: #f59e0b; }
+.status-badge.inactive {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+.status-badge.inactive::before { background-color: #6b7280; }
+
+.action-btn-outline {
+  color: var(--burgundy-light);
+  border: 1px solid var(--burgundy-light);
+  background: transparent;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s;
+}
+.action-btn-outline:hover {
+  background-color: var(--burgundy-light);
+  color: white;
+}
+
+.quick-action-btn {
+  background: #fdf5f5;
+  border: none;
+  color: #374151;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.quick-action-btn i {
+  color: var(--burgundy-light);
+  font-size: 1.2rem;
+}
+
+.quick-action-btn:hover {
+  background: #fee2e2;
+}
+
+.quick-action-btn.primary {
+  background: var(--burgundy-light);
+  color: white;
+}
+
+.quick-action-btn.primary i {
+  color: white;
+}
+
+.quick-action-btn.primary:hover {
+  background: var(--burgundy-dark);
+}
+
+
+/* =====================================================
+   PAYLEDGER TOPBAR
+===================================================== */
+
+.payledger-topbar {
+  height: 70px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 28px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4C0519 0%,
+      #5F0A25 55%,
+      #4C0519 100%
+    );
+
+  border-bottom: 1px solid rgba(201, 151, 43, 0.35);
+
+  box-shadow:
+    0 4px 16px rgba(76, 5, 25, 0.18);
+
+  position: relative;
+  z-index: 1000;
+}
+
+
+/* =====================================================
+   LEFT SIDE
+===================================================== */
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.payledger-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+
+  margin-right: 32px;
+}
+
+.payledger-logo {
+  width: 39px;
+  height: 39px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #C9972B;
+  color: #4C0519;
+
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+
+  box-shadow:
+    0 3px 10px rgba(201, 151, 43, 0.25);
+
+  transition: all 0.25s ease;
+}
+
+.payledger-brand:hover .payledger-logo {
+  background: #E0B84F;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 15px rgba(201, 151, 43, 0.4);
+}
+
+.payledger-name {
+  color: #FFFFFF;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  letter-spacing: -0.3px;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.payledger-nav {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+
+/* Normal navigation */
+
+.nav-link-custom {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding: 9px 13px;
+
+  color: rgba(255, 255, 255, 0.76) !important;
+
+  font-size: 13.5px;
+  font-weight: 500;
+
+  border-radius: 7px;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* Hover */
+
+.nav-link-custom:hover {
+  color: #FFFFFF !important;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  transform: translateY(-1px);
+}
+
+
+/* Active */
+
+.nav-link-custom.active-nav-link {
+  color: #FFFFFF !important;
+
+  background: rgba(201, 151, 43, 0.18);
+
+  font-weight: 600;
+}
+
+
+/* Gold underline */
+
+.nav-link-custom.active-nav-link::after {
+  content: "";
+
+  position: absolute;
+
+  left: 13px;
+  right: 13px;
+
+  bottom: 3px;
+
+  height: 2px;
+
+  background: #C9972B;
+
+  border-radius: 10px;
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   NOTIFICATION
+===================================================== */
+
+.notification-button {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.notification-button:hover {
+  background: rgba(255, 255, 255, 0.10);
+
+  color: #C9972B;
+
+  transform: translateY(-1px);
+}
+
+.notification-button i {
+  font-size: 18px;
+}
+
+
+/* Notification badge */
+
+.notification-badge {
+  position: absolute;
+
+  top: 3px;
+  right: 2px;
+
+  width: 16px;
+  height: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #C9972B;
+  color: #4C0519;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  border: 2px solid #4C0519;
+}
+
+
+/* =====================================================
+   PROFILE BUTTON
+===================================================== */
+
+.profile-button {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 5px 8px 5px 5px;
+
+  border: 1px solid transparent;
+  border-radius: 9px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  color: #FFFFFF;
+
+  transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+  background: rgba(255, 255, 255, 0.10);
+
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+
+/* Avatar */
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #C9972B;
+  color: #4C0519;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.profile-avatar.large {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+}
+
+
+/* Profile information */
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.profile-name {
+  color: #FFFFFF;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  line-height: 1.2;
+}
+
+.profile-role {
+  margin-top: 2px;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 11px;
+
+  line-height: 1.2;
+
+  text-transform: capitalize;
+}
+
+.profile-arrow {
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 11px;
+
+  margin-left: 2px;
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.payledger-dropdown {
+  min-width: 245px;
+
+  margin-top: 10px !important;
+
+  padding: 8px;
+
+  border: 1px solid #E7E5E4 !important;
+
+  border-radius: 12px;
+
+  background: #FFFFFF;
+
+  box-shadow:
+    0 12px 30px rgba(76, 5, 25, 0.15) !important;
+}
+
+
+/* Dropdown profile header */
+
+.profile-dropdown-header {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  margin-bottom: 5px;
+
+  border-radius: 8px;
+
+  background: #FFF7ED;
+}
+
+.profile-dropdown-header strong {
+  display: block;
+
+  color: #18181B;
+
+  font-size: 14px;
+}
+
+.profile-dropdown-header span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #71717A;
+
+  font-size: 12px;
+
+  text-transform: capitalize;
+}
+
+
+/* Dropdown items */
+
+.payledger-dropdown-item {
+  display: flex !important;
+  align-items: center;
+
+  gap: 3px;
+
+  padding: 10px 11px !important;
+
+  border-radius: 7px;
+
+  color: #3F3F46 !important;
+
+  font-size: 13px;
+
+  transition: all 0.2s ease;
+}
+
+.payledger-dropdown-item i {
+  width: 20px;
+
+  color: #71717A;
+
+  transition: color 0.2s ease;
+}
+
+
+/* Dropdown hover */
+
+.payledger-dropdown-item:hover {
+  background: #FFF7ED !important;
+
+  color: #9F1239 !important;
+}
+
+.payledger-dropdown-item:hover i {
+  color: #C9972B;
+}
+
+
+/* Logout */
+
+.payledger-dropdown .logout-item {
+  color: #B91C1C !important;
+}
+
+.payledger-dropdown .logout-item:hover {
+  background: #FEF2F2 !important;
+
+  color: #B91C1C !important;
+}
+
+.payledger-dropdown .logout-item:hover i {
+  color: #B91C1C;
+}
+
+
+/* =====================================================
+   DROPDOWN DIVIDER
+===================================================== */
+
+.payledger-dropdown .dropdown-divider {
+  border-top-color: #E7E5E4;
+
+  margin: 6px 4px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .payledger-topbar {
+    padding: 0 20px;
+  }
+
+  .payledger-brand {
+    margin-right: 18px;
+  }
+
+  .nav-link-custom {
+    padding-left: 9px;
+    padding-right: 9px;
+
+    font-size: 13px;
+  }
+
+}
+
+
+@media (max-width: 992px) {
+
+  .payledger-nav {
+    display: none;
+  }
+
+  .payledger-brand {
+    margin-right: 0;
+  }
+
+}
+
+
+@media (max-width: 576px) {
+
+  .payledger-topbar {
+    height: 62px;
+
+    padding: 0 12px;
+  }
+
+  .payledger-name {
+    font-size: 18px;
+  }
+
+  .profile-info,
+  .profile-arrow {
+    display: none;
+  }
+
+  .topbar-right {
+    gap: 5px;
+  }
+
+}

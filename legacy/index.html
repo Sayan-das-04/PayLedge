@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFlow - Payroll Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon">P</div>
+                <div>
+                    <h1>PayFlow</h1>
+                    <p>Payroll Management System</p>
+                </div>
+            </div>
+
+            <div class="login-title">
+                <h2>Welcome Back</h2>
+                <p>Login to continue to your dashboard</p>
+            </div>
+
+            <div class="login-tabs">
+                <button class="login-tab active" id="tabManager" onclick="setLoginType('manager')">Manager</button>
+                <button class="login-tab" id="tabEmployee" onclick="setLoginType('employee')">Employee</button>
+            </div>
+
+            <form id="loginForm">
+                <div id="managerLoginFields">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="manager@payflow.com" value="manager@payflow.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter password" value="admin123" required>
+                    </div>
+                </div>
+
+                <div id="employeeLoginFields" style="display:none;">
+                    <div class="form-group">
+                        <label>Employee ID</label>
+                        <input type="text" id="employeeLoginId" placeholder="EMP001">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="employeePassword" placeholder="1234">
+                    </div>
+                </div>
+
+                <button class="primary-btn login-btn" type="submit">Login to PayFlow</button>
+            </form>
+
+            <div class="demo-login">
+                <strong>Quick Demo Access (1-Click Login)</strong>
+                <div class="quick-demo-pills">
+                    <button type="button" class="demo-pill" onclick="quickLogin('manager')">👔 Manager (Admin)</button>
+                    <button type="button" class="demo-pill" onclick="quickLogin('EMP001')">👤 Rahul (Developer)</button>
+                    <button type="button" class="demo-pill" onclick="quickLogin('EMP003')">💼 Amit (Accountant)</button>
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: #6b7280; line-height: 1.5;">
+                    <div>• Manager: <b>manager@payflow.com</b> / <b>admin123</b></div>
+                    <div>• Employee: <b>EMP001</b> to <b>EMP005</b> / <b>1234</b></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APPLICATION ================= -->
+    <div id="dashboardApp" class="app-container" style="display:none;">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">P</div>
+                <div>
+                    <h2>PayFlow</h2>
+                    <span>Payroll System</span>
+                </div>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sidebarAvatar">M</div>
+                <div>
+                    <strong id="sidebarUserName">Manager</strong>
+                    <small id="sidebarUserRole">Administrator</small>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+                    <span>📊</span> Dashboard
+                </button>
+                <button class="nav-item manager-only" data-page="employees" onclick="showPage('employees')">
+                    <span>👥</span> Employees
+                </button>
+                <button class="nav-item" data-page="attendance" onclick="showPage('attendance')">
+                    <span>🕒</span> Attendance
+                </button>
+                <button class="nav-item" data-page="leave" onclick="showPage('leave')">
+                    <span>🏖️</span> Leave Management
+                </button>
+                <button class="nav-item" data-page="payroll" onclick="showPage('payroll')">
+                    <span>💰</span> Payroll
+                </button>
+                <button class="nav-item" data-page="payslips" onclick="showPage('payslips')">
+                    <span>📄</span> Payslips
+                </button>
+                <button class="nav-item manager-only" data-page="settings" onclick="showPage('settings')">
+                    <span>⚙️</span> Settings
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <button class="logout-btn" onclick="logout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- MOBILE OVERLAY -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+                <div>
+                    <h2 id="pageTitle">Dashboard</h2>
+                    <p id="pageSubtitle">Welcome back to PayFlow</p>
+                </div>
+                <div class="topbar-right">
+                    <div class="topbar-date" id="topbarDate">📅 Today</div>
+                    <div class="topbar-profile" onclick="showPage(currentUser?.type === 'manager' ? 'settings' : 'payslips')">
+                        <div class="small-avatar" id="topAvatar">M</div>
+                        <span id="topUserName">Manager</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ================= DASHBOARD ================= -->
+            <section id="dashboardPage" class="page active-page">
+                <div class="welcome-card">
+                    <div>
+                        <span class="welcome-label" id="dashboardRoleBadge">PAYROLL OVERVIEW</span>
+                        <h1 id="dashboardWelcome">Welcome back, Manager 👋</h1>
+                        <p id="dashboardSubtitle">Here is your organization's real-time payroll and employee overview.</p>
+                    </div>
+                    <div class="welcome-icon">💼</div>
+                </div>
+
+                <!-- MANAGER DASHBOARD STATS -->
+                <div id="managerDashboardView">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">👥</div>
+                            <div>
+                                <span>Total Employees</span>
+                                <h2 id="totalEmployees">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">✓</div>
+                            <div>
+                                <span>Present Today</span>
+                                <h2 id="presentToday">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">₹</div>
+                            <div>
+                                <span>Total Processed</span>
+                                <h2 id="totalPayroll">₹0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">⏳</div>
+                            <div>
+                                <span>Pending Payroll</span>
+                                <h2 id="pendingPayroll">₹0</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUICK ACTIONS FOR MANAGER -->
+                    <div class="quick-action-bar">
+                        <span class="action-bar-label">Quick Actions:</span>
+                        <button class="action-pill-btn" onclick="openEmployeeModal()">+ Add Employee</button>
+                        <button class="action-pill-btn" onclick="showPage('attendance')">🕒 Take Attendance</button>
+                        <button class="action-pill-btn" onclick="showPage('payroll')">💰 Run Payroll</button>
+                        <button class="action-pill-btn" onclick="showPage('leave')">🏖️ Review Leaves</button>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="content-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Recent Employees</h3>
+                                    <p>Latest active staff members</p>
+                                </div>
+                                <button class="action-btn permission-btn" onclick="showPage('employees')">View All</button>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Employee</th>
+                                            <th>Department</th>
+                                            <th>Designation</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentEmployeesTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="content-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Today's Attendance</h3>
+                                    <p>Live staff attendance status</p>
+                                </div>
+                                <button class="action-btn permission-btn" onclick="showPage('attendance')">Manage</button>
+                            </div>
+                            <div id="dashboardAttendance" class="attendance-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EMPLOYEE DASHBOARD STATS -->
+                <div id="employeeDashboardView" style="display:none;">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon green">💰</div>
+                            <div>
+                                <span>My Net Salary (Month)</span>
+                                <h2 id="empNetSalary">₹0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue">📅</div>
+                            <div>
+                                <span>Days Present (Month)</span>
+                                <h2 id="empPresentDays">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">🏖️</div>
+                            <div>
+                                <span>Leave Balance</span>
+                                <h2 id="empLeaveBalance">0 Days</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">📄</div>
+                            <div>
+                                <span>Payroll Status</span>
+                                <h2 id="empSalaryStatus">Paid</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- CLOCK-IN WIDGET -->
+                        <div class="content-card clock-in-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Self Service Attendance</h3>
+                                    <p>Record your punch-in for today</p>
+                                </div>
+                                <span id="empTodayStatusBadge" class="status-badge status-pending">Not Marked</span>
+                            </div>
+                            <div class="clock-display-box">
+                                <div class="live-clock" id="liveClockDisplay">09:00:00 AM</div>
+                                <div class="clock-date" id="liveDateDisplay">Thursday, October 1, 2026</div>
+                                <div class="clock-actions">
+                                    <button class="clock-btn clock-in" id="clockInBtn" onclick="employeeClockIn()">🟢 Clock In (Punch In)</button>
+                                    <button class="clock-btn clock-out" id="clockOutBtn" onclick="employeeClockOut()">🔴 Clock Out</button>
+                                </div>
+                                <div class="clock-log" id="clockLogText">Ready to record attendance.</div>
+                            </div>
+                        </div>
+
+                        <!-- QUICK ACTIONS & PAYSLIPS -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3>My Recent Payslips</h3>
+                                    <p>Download or view latest pay statements</p>
+                                </div>
+                                <button class="action-btn permission-btn" onclick="showPage('payslips')">All Payslips</button>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Net Pay</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="empRecentPayslipsTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= EMPLOYEES ================= -->
+            <section id="employeesPage" class="page">
+                <div class="section-heading">
+                    <div>
+                        <h2>Employee Management</h2>
+                        <p>Manage your organization's employees, roles and salary profiles.</p>
+                    </div>
+                    <button class="primary-btn manager-only" onclick="openEmployeeModal()">
+                        + Add Employee
+                    </button>
+                </div>
+
+                <div class="filter-card">
+                    <div class="search-box">
+                        <span>🔍</span>
+                        <input type="text" id="employeeSearch" placeholder="Search by name, ID or designation..." oninput="renderEmployees()">
+                    </div>
+                    <select id="departmentFilter" onchange="renderEmployees()">
+                        <option value="">All Departments</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Operations">Operations</option>
+                    </select>
+                    <select id="statusFilter" onchange="renderEmployees()">
+                        <option value="">All Statuses</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Monthly Salary</th>
+                                    <th>Status</th>
+                                    <th>Role & Access</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= ATTENDANCE ================= -->
+            <section id="attendancePage" class="page">
+                <div class="section-heading">
+                    <div>
+                        <h2>Attendance Tracking</h2>
+                        <p>Monitor daily attendance, working hours and loss of pay.</p>
+                    </div>
+                    <div class="attendance-top-controls">
+                        <input type="date" id="attendanceDate" class="date-input" onchange="handleAttendanceDateChange(this.value)">
+                        <button class="action-btn permission-btn manager-only" onclick="markAllAttendance('Present')">✓ Mark All Present</button>
+                        <button class="action-btn delete-btn manager-only" onclick="markAllAttendance('Absent')">✕ Mark All Absent</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid attendance-stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">👥</div>
+                        <div>
+                            <span>Total Staff</span>
+                            <h2 id="attTotalStaff">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">✓</div>
+                        <div>
+                            <span>Present</span>
+                            <h2 id="attPresentCount">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">⏳</div>
+                        <div>
+                            <span>Half Day</span>
+                            <h2 id="attHalfDayCount">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">✕</div>
+                        <div>
+                            <span>Absent</span>
+                            <h2 id="attAbsentCount">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Punch Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= LEAVE MANAGEMENT ================= -->
+            <section id="leavePage" class="page">
+                <div class="section-heading">
+                    <div>
+                        <h2>Leave Management</h2>
+                        <p>Review leave requests, approve time off and track balances.</p>
+                    </div>
+                    <button class="primary-btn" onclick="openLeaveModal()">
+                        + Apply for Leave
+                    </button>
+                </div>
+
+                <div class="stats-grid leave-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon orange">⏳</div>
+                        <div>
+                            <span>Pending Requests</span>
+                            <h2 id="pendingLeaves">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">✓</div>
+                        <div>
+                            <span>Approved Leaves</span>
+                            <h2 id="approvedLeaves">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">✕</div>
+                        <div>
+                            <span>Rejected Requests</span>
+                            <h2 id="rejectedLeaves">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">📊</div>
+                        <div>
+                            <span>Total Applications</span>
+                            <h2 id="totalLeaves">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EMPLOYEE LEAVE QUOTAS -->
+                <div class="leave-quota-banner" id="leaveQuotaBanner">
+                    <div class="quota-item"><strong>Casual Leave (CL):</strong> <span id="clQuotaDisplay">10/12 Remaining</span></div>
+                    <div class="quota-item"><strong>Sick Leave (SL):</strong> <span id="slQuotaDisplay">7/10 Remaining</span></div>
+                    <div class="quota-item"><strong>Paid Leave (PL):</strong> <span id="plQuotaDisplay">12/15 Remaining</span></div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Leave Requests</h3>
+                            <p>History and approval status of leave applications</p>
+                        </div>
+                        <select id="leaveFilter" onchange="renderLeaves()" style="width: auto; padding: 6px 12px;">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Leave Type</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Days</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaveTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= PAYROLL ================= -->
+            <section id="payrollPage" class="page">
+                <div class="section-heading">
+                    <div>
+                        <h2>Payroll Calculation & Processing</h2>
+                        <p>Calculate salaries, compute allowances & deductions, and disburse pay.</p>
+                    </div>
+                    <div class="manager-only">
+                        <button class="primary-btn" onclick="bulkProcessPayroll()" style="background:#16a34a;">
+                            🚀 Process All Staff Payroll
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-card payroll-form manager-only">
+                    <div class="payroll-form-header">
+                        <h3>Salary Calculation Engine</h3>
+                        <p>Select employee and month. System automatically syncs basic pay, computes HRA, DA, PF, ESI, and deductions.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Select Employee *</label>
+                            <select id="payrollEmployee" onchange="handlePayrollEmployeeSelect()">
+                                <option value="">Select Employee</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payroll Month *</label>
+                            <input type="month" id="payrollMonth" onchange="handlePayrollMonthChange()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Basic Salary (Monthly) *</label>
+                            <input type="number" id="basicSalary" placeholder="0" oninput="updateLivePayrollPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Working Days in Month</label>
+                            <input type="number" id="workingDays" value="30" oninput="updateLivePayrollPreview()">
+                        </div>
+                    </div>
+
+                    <div class="salary-breakdown-grid">
+                        <div class="breakdown-card earnings">
+                            <h4>➕ Earnings & Allowances</h4>
+                            <div class="form-group-sm">
+                                <label>HRA (House Rent Allowance):</label>
+                                <input type="number" id="hraAllowance" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="form-group-sm">
+                                <label>DA (Dearness Allowance):</label>
+                                <input type="number" id="daAllowance" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="form-group-sm">
+                                <label>Special / Other Allowances:</label>
+                                <input type="number" id="allowances" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="breakdown-subtotal">
+                                <span>Gross Earnings:</span>
+                                <strong id="grossEarningsPreview">₹0</strong>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-card deductions">
+                            <h4>➖ Statutory Deductions</h4>
+                            <div class="form-group-sm">
+                                <label>PF (Provident Fund - 12%):</label>
+                                <input type="number" id="pfDeduction" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="form-group-sm">
+                                <label>ESI (Employee State Insurance):</label>
+                                <input type="number" id="esiDeduction" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="form-group-sm">
+                                <label>Professional Tax / TDS:</label>
+                                <input type="number" id="taxDeduction" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="form-group-sm">
+                                <label>Loss of Pay (Absent Days):</label>
+                                <input type="number" id="deductions" placeholder="0" oninput="updateLivePayrollPreview()">
+                            </div>
+                            <div class="breakdown-subtotal">
+                                <span>Total Deductions:</span>
+                                <strong id="totalDeductionsPreview" style="color:var(--red);">₹0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="salary-preview">
+                        <div>
+                            <span>Net Payable Salary</span>
+                            <small id="netSalaryInWords">Zero Rupees Only</small>
+                        </div>
+                        <strong id="netSalaryPreview">₹0</strong>
+                    </div>
+
+                    <div class="payroll-actions-bar">
+                        <button type="button" class="secondary-btn" onclick="autoCalculatePayrollForm()">
+                            ⚡ Auto-Calculate from Standard Structure
+                        </button>
+                        <button class="primary-btn" onclick="calculatePayroll()">
+                            💾 Calculate & Save Payroll
+                        </button>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Payroll History & Disbursements</h3>
+                            <p>Previously processed and pending payroll records</p>
+                        </div>
+                        <div class="filter-controls-row">
+                            <select id="payrollStatusFilter" onchange="renderPayrollHistory()" style="width:auto; padding: 6px 12px;">
+                                <option value="">All Statuses</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Month</th>
+                                    <th>Basic Pay</th>
+                                    <th>Gross Pay</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payrollHistory"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= PAYSLIPS ================= -->
+            <section id="payslipsPage" class="page">
+                <div class="section-heading">
+                    <div>
+                        <h2>Generated Payslips</h2>
+                        <p>View, download and print formal salary statements.</p>
+                    </div>
+                </div>
+
+                <div class="filter-card">
+                    <div class="search-box">
+                        <span>🔍</span>
+                        <input type="text" id="payslipSearch" placeholder="Search by employee name or ID..." oninput="renderPayslips()">
+                    </div>
+                    <select id="payslipMonthFilter" onchange="renderPayslips()">
+                        <option value="">All Months</option>
+                        <option value="September 2026">September 2026</option>
+                        <option value="October 2026">October 2026</option>
+                        <option value="August 2026">August 2026</option>
+                    </select>
+                </div>
+
+                <div class="content-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Payslip ID</th>
+                                    <th>Employee</th>
+                                    <th>Pay Period</th>
+                                    <th>Gross Pay</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payslipsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SETTINGS ================= -->
+            <section id="settingsPage" class="page manager-only">
+                <div class="section-heading">
+                    <div>
+                        <h2>System Settings & Compliance</h2>
+                        <p>Configure company profile, currency, statutory rates and data management.</p>
+                    </div>
+                </div>
+
+                <div class="form-card settings-form">
+                    <h3 style="margin-bottom:15px; color:var(--primary);">🏢 Organization Profile</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="companyName" value="PayFlow Technologies">
+                        </div>
+                        <div class="form-group">
+                            <label>Company Email</label>
+                            <input type="email" id="companyEmail" value="payroll@payflow.com">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Company Phone</label>
+                            <input type="text" id="companyPhone" value="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label>Company Address</label>
+                            <input type="text" id="companyAddress" value="Tech Park, Sector 5, Bengaluru, Karnataka - 560100">
+                        </div>
+                    </div>
+
+                    <h3 style="margin:25px 0 15px; color:var(--primary);">💰 Currency & Payroll Rules</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Currency Symbol</label>
+                            <select id="currency">
+                                <option value="₹">₹ (INR - Indian Rupee)</option>
+                                <option value="$">$ (USD - US Dollar)</option>
+                                <option value="€">€ (EUR - Euro)</option>
+                                <option value="£">£ (GBP - British Pound)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payroll Cycle</label>
+                            <select id="payrollCycle">
+                                <option value="Monthly">Monthly</option>
+                                <option value="Bi-Weekly">Bi-Weekly</option>
+                                <option value="Weekly">Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Standard Working Days per Month</label>
+                            <input type="number" id="settingWorkingDays" value="30">
+                        </div>
+                        <div class="form-group">
+                            <label>PF Deduction Rate (%)</label>
+                            <input type="number" id="settingPfRate" value="12">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Standard HRA Rate (%)</label>
+                            <input type="number" id="settingHraRate" value="40">
+                        </div>
+                        <div class="form-group">
+                            <label>Standard DA Rate (%)</label>
+                            <input type="number" id="settingDaRate" value="10">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:20px;">
+                        <button class="primary-btn" onclick="saveSettings()">Save Preferences</button>
+                    </div>
+
+                    <h3 style="margin:35px 0 15px; color:var(--red);">💾 Backup, Restore & Reset</h3>
+                    <div class="settings-backup-box">
+                        <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Export complete system data to JSON, restore from backup, or reset to initial demo data.</p>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button type="button" class="secondary-btn" onclick="exportSystemData()">📥 Export Data (JSON)</button>
+                            <button type="button" class="secondary-btn" onclick="document.getElementById('importFileInput').click()">📤 Import Data (JSON)</button>
+                            <input type="file" id="importFileInput" style="display:none;" accept=".json" onchange="importSystemData(event)">
+                            <button type="button" class="action-btn delete-btn" onclick="resetSystemData()">⚠️ Reset to Factory Demo Data</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= ADD / EDIT EMPLOYEE MODAL ================= -->
+    <div class="modal" id="employeeModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2 id="employeeModalTitle">Add New Employee</h2>
+                    <p>Enter employee profile and salary details.</p>
+                </div>
+                <button onclick="closeEmployeeModal()">✕</button>
+            </div>
+
+            <form id="employeeForm">
+                <input type="hidden" id="editEmployeeId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Employee ID *</label>
+                        <input type="text" id="employeeId" placeholder="EMP006" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Employee Full Name *</label>
+                        <input type="text" id="employeeName" placeholder="Full Name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <select id="employeeDepartment" required>
+                            <option value="">Select Department</option>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Designation *</label>
+                        <input type="text" id="employeeDesignation" placeholder="e.g. Software Engineer" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Monthly Basic Salary *</label>
+                        <input type="number" id="employeeSalary" placeholder="30000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Employment Status</label>
+                        <select id="employeeStatus">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" onclick="closeEmployeeModal()">Cancel</button>
+                    <button type="submit" class="primary-btn" id="employeeSubmitBtn">Save Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= PERMISSION MODAL ================= -->
+    <div class="modal" id="permissionModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2>Employee Permissions & Roles</h2>
+                    <p>Configure access control and dashboard privileges.</p>
+                </div>
+                <button onclick="closePermissionModal()">✕</button>
+            </div>
+
+            <form id="permissionForm">
+                <input type="hidden" id="permissionEmployeeId">
+
+                <div class="form-group">
+                    <label>Assigned System Role</label>
+                    <select id="employeeRole">
+                        <option value="Employee">Employee (Standard Access)</option>
+                        <option value="HR Executive">HR Executive</option>
+                        <option value="Accountant">Accountant</option>
+                        <option value="Manager">Manager</option>
+                    </select>
+                </div>
+
+                <div class="permission-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="permissionAttendance" checked>
+                        <span>View & Record Attendance</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="permissionLeave" checked>
+                        <span>Apply & View Leave Requests</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="permissionPayroll" checked>
+                        <span>View Payroll Details</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="permissionPayslip" checked>
+                        <span>Download & Print Payslips</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="permissionProfile">
+                        <span>Edit Personal Profile</span>
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" onclick="closePermissionModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">Save Permissions</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= LEAVE MODAL ================= -->
+    <div class="modal" id="leaveModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2>Apply for Leave</h2>
+                    <p>Submit a formal leave request for approval.</p>
+                </div>
+                <button onclick="closeLeaveModal()">✕</button>
+            </div>
+
+            <form id="leaveForm">
+                <div class="form-group" id="leaveEmployeeSelectGroup">
+                    <label>Select Employee *</label>
+                    <select id="leaveEmployeeId" required>
+                        <option value="">Select Employee</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Leave Type *</label>
+                    <select id="leaveType" required>
+                        <option value="">Select Leave Type</option>
+                        <option value="Casual Leave">Casual Leave (CL)</option>
+                        <option value="Sick Leave">Sick Leave (SL)</option>
+                        <option value="Earned Leave">Earned Leave (EL / PL)</option>
+                        <option value="Emergency Leave">Emergency Leave</option>
+                        <option value="Unpaid Leave">Unpaid Leave (Loss of Pay)</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>From Date *</label>
+                        <input type="date" id="leaveFrom" required onchange="calculateLeaveDaysPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>To Date *</label>
+                        <input type="date" id="leaveTo" required onchange="calculateLeaveDaysPreview()">
+                    </div>
+                </div>
+
+                <div style="font-size:12px; color:var(--primary); font-weight:600; margin-bottom:12px;" id="leaveDurationText">
+                    Duration: 0 Days
+                </div>
+
+                <div class="form-group">
+                    <label>Reason for Leave *</label>
+                    <textarea id="leaveReason" rows="3" placeholder="Provide reason for time off..." required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-btn" onclick="closeLeaveModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= IN-APP PAYSLIP MODAL ================= -->
+    <div class="modal" id="payslipModal">
+        <div class="modal-card payslip-modal-card">
+            <div class="modal-header payslip-modal-header no-print">
+                <div>
+                    <h2>Salary Payslip Preview</h2>
+                    <p>Official statement of earnings and deductions</p>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="primary-btn" onclick="printPayslipDocument()" style="padding:6px 12px; font-size:12px;">🖨️ Print / Save PDF</button>
+                    <button onclick="closePayslipModal()">✕</button>
+                </div>
+            </div>
+
+            <!-- PAYSLIP PRINTABLE DOCUMENT -->
+            <div id="payslipPrintableDocument" class="payslip-document">
+                <!-- Dynamically injected payslip content -->
+            </div>
+
+            <div class="modal-actions no-print" style="margin-top:20px;">
+                <button type="button" class="secondary-btn" onclick="closePayslipModal()">Close Preview</button>
+                <button type="button" class="primary-btn" onclick="printPayslipDocument()">🖨️ Print Payslip</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST ================= -->
+    <div id="toast" class="toast"></div>
+
+    <!-- MAIN SCRIPT -->
+    <script src="script.js"></script>
+</body>
+
+</html>
