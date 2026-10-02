@@ -18,6 +18,9 @@ export default function Employees() {
   const initialForm = { employeeId: '', name: '', email: '', password: '123', department: '', designation: '', basicSalary: '' };
   const [formData, setFormData] = useState(initialForm);
   const [pendingLeaves, setPendingLeaves] = useState(0);
+  const [presentToday, setPresentToday] = useState(0);
+  const [attendancePercentage, setAttendancePercentage] = useState(0);
+  const [totalPayroll, setTotalPayroll] = useState(0);
 
   const fetchEmployees = async () => {
     try {
@@ -26,6 +29,31 @@ export default function Employees() {
       
       const leaveRes = await axios.get('https://payledge.onrender.com/api/leaves');
       setPendingLeaves(leaveRes.data.filter(l => l.status === 'Pending').length);
+
+      const attRes = await axios.get('https://payledge.onrender.com/api/attendance');
+      const today = new Date().toISOString().split('T')[0];
+      
+      // De-duplicate attendance records for today per employee
+      const todayRecords = attRes.data.filter(r => new Date(r.date).toISOString().split('T')[0] === today);
+      const uniqueEmployeePunches = new Map();
+      todayRecords.forEach(record => {
+        if (!uniqueEmployeePunches.has(record.employeeId)) {
+          uniqueEmployeePunches.set(record.employeeId, record);
+        } else if (record.status === 'Present' || record.status === 'Half Day') {
+          uniqueEmployeePunches.set(record.employeeId, record);
+        }
+      });
+      const uniqueRecords = Array.from(uniqueEmployeePunches.values());
+      const presentCount = uniqueRecords.filter(r => r.status === 'Present' || r.status === 'Half Day').length;
+      setPresentToday(presentCount);
+
+      const totalEmps = res.data.length || 1;
+      setAttendancePercentage(Math.min(100, Math.round((presentCount / totalEmps) * 100)));
+
+      const payRes = await axios.get('https://payledge.onrender.com/api/payroll');
+      const monthTotal = payRes.data.reduce((acc, curr) => acc + curr.netSalary, 0);
+      setTotalPayroll(monthTotal.toLocaleString('en-IN'));
+
     } catch (err) {
       console.error(err);
     }
@@ -133,10 +161,10 @@ export default function Employees() {
               <div className="stat-icon-circle"><i className="pi pi-user"></i></div>
               <div>
                 <span className="text-muted d-block" style={{fontSize: '12px'}}>Present Today</span>
-                <h4 className="fw-bold m-0">20</h4>
+                <h4 className="fw-bold m-0">{presentToday}</h4>
               </div>
             </div>
-            <div className="mt-3 text-success" style={{fontSize: '11px'}}><span className="d-inline-block rounded-circle me-1" style={{width:'6px',height:'6px',background:'#10b981'}}></span> 83% attendance</div>
+            <div className="mt-3 text-success" style={{fontSize: '11px'}}><span className="d-inline-block rounded-circle me-1" style={{width:'6px',height:'6px',background:'#10b981'}}></span> {attendancePercentage}% attendance</div>
           </Card>
         </div>
         <div className="col-md-3">
@@ -145,7 +173,7 @@ export default function Employees() {
               <div className="stat-icon-circle"><i className="pi pi-calendar"></i></div>
               <div>
                 <span className="text-muted d-block" style={{fontSize: '12px'}}>Total Payroll</span>
-                <h4 className="fw-bold m-0">₹ 7,80,000</h4>
+                <h4 className="fw-bold m-0">₹ {totalPayroll}</h4>
               </div>
             </div>
             <div className="mt-3 text-warning" style={{fontSize: '11px'}}><span className="d-inline-block rounded-circle me-1" style={{width:'6px',height:'6px',background:'#f59e0b'}}></span> This month</div>
